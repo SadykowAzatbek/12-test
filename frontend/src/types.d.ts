@@ -39,3 +39,8 @@ export interface RegisterResponse {
 export interface GlobalError {
   error: string;
 }
+
+export interface PhotoGalleryTypes {
+  title: string;
+  image: string;
+}
