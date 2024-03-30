@@ -31,3 +31,14 @@ export const addPhoto = createAsyncThunk<void, PhotoGalleryTypes>(
     }
   },
 );
+
+export const deletePhoto = createAsyncThunk<void, string>(
+  'delete/photo',
+  async (id) => {
+    try {
+      await axiosApi.delete('/photos/' + id);
+    } catch (err) {
+      throw err;
+    }
+  },
+);
