@@ -2,6 +2,7 @@ import {combineReducers, configureStore} from '@reduxjs/toolkit';
 import {persistReducer, FLUSH, PAUSE, PERSIST, REHYDRATE, PURGE, REGISTER, persistStore} from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import {usersReducer} from '../features/Users/usersSlice.ts';
+import {photosReducer} from '../features/PhotoGallery/photosGallerySlice.ts';
 
 const usersPersistConfig = {
   key: 'music:users',
@@ -11,6 +12,7 @@ const usersPersistConfig = {
 
 const rootReducer = combineReducers({
   users: persistReducer(usersPersistConfig, usersReducer),
+  photos: photosReducer,
 })
 
 export const store = configureStore({

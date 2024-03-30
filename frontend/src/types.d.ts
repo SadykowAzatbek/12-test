@@ -44,3 +44,10 @@ export interface PhotoGalleryTypes {
   title: string;
   image: string;
 }
+
+export interface AllPhotos {
+  _id: string;
+  user: string;
+  title: string;
+  image: string;
+}

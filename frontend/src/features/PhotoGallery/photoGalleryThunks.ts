@@ -1,6 +1,20 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
-import {PhotoGalleryTypes} from '../../types';
+import {AllPhotos, PhotoGalleryTypes} from '../../types';
 import axiosApi from '../../axiosApi.ts';
+
+export const getPhotos = createAsyncThunk<AllPhotos[]>(
+  'get/photos',
+  async () => {
+    const response = await axiosApi.get('/photos');
+    const items = response.data;
+
+    if (!items) {
+      return []
+    }
+
+    return items;
+  },
+);
 
 export const addPhoto = createAsyncThunk<void, PhotoGalleryTypes>(
   'add/photo',
