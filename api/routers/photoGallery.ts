@@ -9,7 +9,7 @@ const photoGalleryRouter = Router();
 
 photoGalleryRouter.get('/', async (_req, res, next) => {
   try {
-    const photos = await PhotoGallery.find();
+    const photos = await PhotoGallery.find().populate({path: 'user', select: '_id displayName'});
 
     return res.send(photos);
   } catch (err) {
@@ -27,7 +27,7 @@ photoGalleryRouter.get('/:id', async (req, res, next) => {
       return res.status(422).send({error: 'Wrong objectId!'});
     }
 
-    const photos = await PhotoGallery.find({user: _id});
+    const photos = await PhotoGallery.find({user: _id}).populate({path: 'user', select: '_id displayName'});
 
     if (!photos) {
       return res.status(422).send({error: 'Not found!'});
