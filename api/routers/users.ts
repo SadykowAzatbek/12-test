@@ -8,6 +8,16 @@ import config from "../config";
 const usersRouter = Router();
 const client = new OAuth2Client(config.google.clientId);
 
+usersRouter.get('/', async (req, res, next) => {
+  try {
+    const users = await User.find().select('-token');
+
+    return res.send(users);
+  } catch (err) {
+    return next(err);
+  }
+});
+
 usersRouter.post('/', imageUpload.single('image'), async (req, res, next) => {
   try {
     const user = new User({
