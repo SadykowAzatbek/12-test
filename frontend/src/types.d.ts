@@ -47,7 +47,10 @@ export interface PhotoGalleryTypes {
 
 export interface AllPhotos {
   _id: string;
-  user: string;
+  user: {
+    _id: string;
+    displayName: string;
+  };
   title: string;
   image: string;
 }

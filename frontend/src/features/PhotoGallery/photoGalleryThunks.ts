@@ -5,7 +5,21 @@ import axiosApi from '../../axiosApi.ts';
 export const getPhotos = createAsyncThunk<AllPhotos[]>(
   'get/photos',
   async () => {
-    const response = await axiosApi.get('/photos');
+    const response = await axiosApi.get<AllPhotos[]>('/photos');
+    const items = response.data;
+
+    if (!items) {
+      return []
+    }
+
+    return items;
+  },
+);
+
+export const getUserPhotos = createAsyncThunk<AllPhotos[], string>(
+  'getUser/photos',
+  async (id) => {
+    const response = await axiosApi.get<AllPhotos[]>('/photos/' + id);
     const items = response.data;
 
     if (!items) {
@@ -37,6 +51,17 @@ export const deletePhoto = createAsyncThunk<void, string>(
   async (id) => {
     try {
       await axiosApi.delete('/photos/' + id);
+    } catch (err) {
+      throw err;
+    }
+  },
+);
+
+export const userDeletePhoto = createAsyncThunk<void, string>(
+  'delete/photo',
+  async (id) => {
+    try {
+      await axiosApi.delete('/photos?photo=' + id);
     } catch (err) {
       throw err;
     }

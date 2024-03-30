@@ -45,7 +45,10 @@ const Photos = () => {
               <ImageCardMedia image={`${apiUrl}/${elem.image}`}/>
               <CardContent>
                 <Typography component="div" variant="h6">
-                  <div onClick={() => toProfile(elem.user)}>{elem.title}</div>
+                  {elem.title}
+                </Typography>
+                <Typography component="div">
+                  <div onClick={() => toProfile(elem.user._id)}>By: {elem.user.displayName}</div>
                 </Typography>
                 {user && user.role === 'admin' && <Typography component="div">
                   <Button sx={{color: 'red'}} onClick={() => deleteOnePhoto(elem._id)}>Удалить</Button>

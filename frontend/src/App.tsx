@@ -9,6 +9,7 @@ import {selectUser} from './features/Users/usersSlice.ts';
 import {useAppSelector} from './App/hooks.ts';
 import PhotoGalleryForm from './features/PhotoGallery/PhotoGalleryForm.tsx';
 import Photos from './features/PhotoGallery/Photos.tsx';
+import UserPhotos from './features/PhotoGallery/UserPhotos.tsx';
 
 function App() {
   const user = useAppSelector(selectUser);
@@ -20,7 +21,7 @@ function App() {
       </header>
       <Routes>
         <Route path="/" element={<Photos />} />
-        <Route path="/photos/:id" element={<div>Thats profile</div>} />
+        <Route path="/photos/:id" element={<UserPhotos />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/addPhoto" element={
