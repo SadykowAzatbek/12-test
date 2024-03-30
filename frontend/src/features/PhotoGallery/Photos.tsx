@@ -48,7 +48,7 @@ const Photos = () => {
                   {elem.title}
                 </Typography>
                 <Typography component="div">
-                  <div onClick={() => toProfile(elem.user._id)}>By: {elem.user.displayName}</div>
+                  <div onClick={() => toProfile(elem.user._id)}>By: {elem.user?.displayName}</div>
                 </Typography>
                 {user && user.role === 'admin' && <Typography component="div">
                   <Button sx={{color: 'red'}} onClick={() => deleteOnePhoto(elem._id)}>Удалить</Button>

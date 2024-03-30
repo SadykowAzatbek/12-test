@@ -15,6 +15,8 @@ const PhotoGalleryForm = () => {
     image: '',
   });
 
+  const [active, setActive] = useState(true);
+
   const inputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const {name, value} = e.target;
 
@@ -31,6 +33,8 @@ const PhotoGalleryForm = () => {
       setState((prevState) => ({
         ...prevState, [name]: files[0]
       }));
+
+      setActive(false);
     }
   };
 
@@ -61,7 +65,7 @@ const PhotoGalleryForm = () => {
             <FileInput label="image" name="image" onChange={fileInputChangeHandler} />
           </Grid>
         </Grid>
-        <Button type="submit">Add photo</Button>
+        <Button type="submit" disabled={active}>Add photo</Button>
       </Box>
     </>
   );
