@@ -1,10 +1,20 @@
 import {useAppDispatch, useAppSelector} from '../../App/hooks';
 import {selectIsLoading, selectPhotos} from './photosGallerySlice.ts';
 import {selectUser} from '../Users/usersSlice.ts';
-import {Button, Card, CardContent, CardMedia, CircularProgress, Grid, styled, Typography} from '@mui/material';
+import {
+  Button,
+  Card,
+  CardContent,
+  CardMedia,
+  CircularProgress, Dialog, DialogActions,
+  DialogContent,
+  Grid,
+  styled,
+  Typography
+} from '@mui/material';
 import {useNavigate} from 'react-router-dom';
 import {apiUrl} from '../../constants.ts';
-import {useEffect} from 'react';
+import {useEffect, useState} from 'react';
 import {deletePhoto, getPhotos} from './photoGalleryThunks.ts';
 
 const Photos = () => {
@@ -14,10 +24,17 @@ const Photos = () => {
   const isLoading = useAppSelector(selectIsLoading);
   const user = useAppSelector(selectUser);
 
-  const ImageCardMedia = styled(CardMedia)({
-    height: 0,
-    paddingTop: '56.25%',
-  });
+  const [photosData, setPhotosData] = useState<null | string>(null);
+  const [dialog, setDialog] = useState(false);
+
+  const handleOpen = (photo: string) => {
+    setPhotosData(photo);
+    setDialog(true);
+  };
+
+  const handleClose = () => {
+    setDialog(false);
+  };
 
   useEffect(() => {
     const fetchUrl = async () => {
@@ -36,12 +53,17 @@ const Photos = () => {
     await dispatch(getPhotos());
   };
 
+  const ImageCardMedia = styled(CardMedia)({
+    height: 0,
+    paddingTop: '65.25%',
+  });
+
   return (
     <>
       <Grid container spacing={3}>
         {!isLoading ? photos.map((elem) => (
           <Grid item xs={3} key={elem._id}>
-            <Card>
+            <Card onClick={() => handleOpen(elem.image)}>
               <ImageCardMedia image={`${apiUrl}/${elem.image}`}/>
               <CardContent>
                 <Typography component="div" variant="h6">
@@ -58,6 +80,15 @@ const Photos = () => {
           </Grid>
         )) : <CircularProgress />}
       </Grid>
+
+      <Dialog open={dialog} onClose={handleClose}>
+        <DialogContent sx={{width: "400px", height: "auto"}}>
+          <ImageCardMedia image={`${apiUrl}/${photosData}`} />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Close</Button>
+        </DialogActions>
+      </Dialog>
       </>
   );
 };

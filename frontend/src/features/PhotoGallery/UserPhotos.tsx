@@ -1,8 +1,18 @@
-import {Button, Card, CardContent, CardMedia, CircularProgress, Grid, styled, Typography} from '@mui/material';
+import {
+  Button,
+  Card,
+  CardContent,
+  CardMedia,
+  CircularProgress, Dialog, DialogActions,
+  DialogContent,
+  Grid,
+  styled,
+  Typography
+} from '@mui/material';
 import {apiUrl} from '../../constants.ts';
 import {useAppDispatch, useAppSelector} from '../../App/hooks.ts';
 import {selectUserPhotos, selectUserIsLoading} from './photosGallerySlice.ts';
-import {useEffect} from 'react';
+import {useEffect, useState} from 'react';
 import {deletePhoto, getUserPhotos, getUsers, userDeletePhoto} from './photoGalleryThunks.ts';
 import {selectUser, selectUsers, selectUsersLoading} from '../Users/usersSlice.ts';
 import {useNavigate, useParams} from 'react-router-dom';
@@ -16,6 +26,18 @@ const UserPhotos = () => {
   const user = useAppSelector(selectUser);
   const users = useAppSelector(selectUsers);
   const usersIsLoading = useAppSelector(selectUsersLoading);
+
+  const [photosData, setPhotosData] = useState<null | string>(null);
+  const [dialog, setDialog] = useState(false);
+
+  const handleOpen = (photo: string) => {
+    setPhotosData(photo);
+    setDialog(true);
+  };
+
+  const handleClose = () => {
+    setDialog(false);
+  };
 
   useEffect(() => {
     const fetchUrl = async () => {
@@ -54,7 +76,7 @@ const UserPhotos = () => {
       <Grid container spacing={3}>
         {!isLoading ? userPhotos.map((elem) => (
           <Grid item xs={3} key={elem._id}>
-            <Card>
+            <Card onClick={() => handleOpen(elem.image)}>
               <ImageCardMedia image={`${apiUrl}/${elem.image}`}/>
               <CardContent>
                 <Typography component="div" variant="h6">
@@ -71,6 +93,15 @@ const UserPhotos = () => {
           </Grid>
         )) : <CircularProgress />}
       </Grid>
+
+      <Dialog open={dialog} onClose={handleClose}>
+        <DialogContent sx={{width: "400px", height: "auto"}}>
+          <ImageCardMedia image={`${apiUrl}/${photosData}`} />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Close</Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 };
